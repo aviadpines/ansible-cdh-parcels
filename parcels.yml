@@ -1,13 +1,25 @@
 - hosts: localhost
   tasks:
+    - name: Add Kafka repo to CM
+      cdh_repos:
+          host: 172.18.50.214
+          user: admin
+          password: admin
+          repos:
+              - http://archive.cloudera.com/kafka/parcels/1.4.0/
+      register: result
+    - debug: var=result
+
+
+- hosts: localhost
+  tasks:
     - name: Test that my module works
       cdh_parcels:
+          action: download
           host: 172.18.50.214  
           user: admin
           password: admin
           parcels:
               KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
-          repos: 
-              - http://archive.cloudera.com/kafka/parcels/1.4.0/ 
       register: result
     - debug: var=result    

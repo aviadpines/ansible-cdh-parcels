@@ -4,19 +4,6 @@ def cm_api(cm_host, cm_api_version, cm_user, cm_pass):
     return ApiResource(cm_host, version=cm_api_version, username=cm_user, password=cm_pass)
 
 
-def add_repos(api, repos):
-    cm_config = api.get_cloudera_manager().get_config(view='full')
-    repo_config = cm_config['REMOTE_PARCEL_REPO_URLS']
-    existing_repos = (repo_config.value or repo_config.default).split(',')
-    added_repos = []
-    for repo in repos:
-        if repo not in existing_repos:
-            added_repos += [repo]
-    api.get_cloudera_manager().update_config({'REMOTE_PARCEL_REPO_URLS': ','.join(existing_repos + added_repos)})
-    time.sleep(10)
-    return dict(pre_existing_repos = existing_repos, added_repos = added_repos)
-
-
 def download_parcel(cluster, parcel):
     try:
         pd = parcel.start_download()
@@ -48,7 +35,8 @@ def distribute_parcel(cluster, parcel):
     except Exception as e:
         return "FAILED: %s" % (e)   
 
-def activat_parcel(cluster, parcel):
+
+def activate_parcel(cluster, parcel):
     try:
         pd = parcel.activate()
         if pd.success != True:
@@ -65,7 +53,7 @@ def activat_parcel(cluster, parcel):
 
 
 
-def handle_parcels(api, parcels):
+def handle_parcels(api, parcels, acttion_func):
     results = dict()
     for cluster in api.get_all_clusters():
         results[cluster.name] = dict()
@@ -73,9 +61,7 @@ def handle_parcels(api, parcels):
             parcel = cluster.get_parcel(service, version)
             results[cluster.name][service] = dict()
             results[cluster.name][service][version] = dict()
-            results[cluster.name][service][version]['download'] = download_parcel(cluster, parcel)
-            results[cluster.name][service][version]['distribute'] = distribute_parcel(cluster, parcel)
-            results[cluster.name][service][version]['activate'] = activate_parcel(cluster, parcel)
+            results[cluster.name][service][version] = action_func(cluster, parcel)
     return results
 
 
@@ -91,7 +77,7 @@ def main():
                 user = dict(default = None),
                 password = dict(default = None),
                 parcels = dict(type = 'dict', required = True),
-                repos = dict(type = 'list', default = [])
+                action = dict(type = 'str', choices = ['download', 'distribute', 'activate'], default = [])
                 ),
             )
 
@@ -100,15 +86,21 @@ def main():
     user = module.params['user']
     password = module.params['password']
     parcels = module.params['parcels']
-    repos = module.params['repos']
+    action = module.params['action']
 
     api = cm_api(host, api_version, user, password)
-    repositories = add_repos(api, repos)
-    downloaded_parcels = handle_parcels(api, parcels)
+
+    func = {
+        'download': download_parcel,
+        'distribute': distribute_parcel,
+        'activate': activate_parcel
+    }[action]
+
+    parcels = handle_parcels(api, parcels, func)
+
     result = dict(
             results=dict(
-                repositories = repositories,
-                parcels = downloaded_parcels
+                parcels = parcels
             )
     )
 
