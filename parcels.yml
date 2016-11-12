@@ -11,7 +11,7 @@
         repos:
           - http://archive.cloudera.com/kafka/parcels/1.4.0/
       register: repo_results
-    - debug: var = repo_results
+    - debug: var=repo_results
 
 - name: Download Kafka parcel
   hosts: localhost
@@ -27,7 +27,7 @@
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
       register: download_results
-    - debug: var = download_results
+    - debug: var=download_results
 
 - name: Distibute Kafka parcel
   hosts: localhost
@@ -43,7 +43,7 @@
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
       register: distribute_results
-    - debug: var = distribute_results
+    - debug: var=distribute_results
 
 - name: Activate Kafka parcel
   hosts: localhost
@@ -59,4 +59,4 @@
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
       register: activate_results
-    - debug: var = activate_results
+    - debug: var=activate_results
