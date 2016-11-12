@@ -52,8 +52,7 @@ def activate_parcel(cluster, parcel):
         return "FAILED: %s" % (e)   
 
 
-
-def handle_parcels(api, parcels, acttion_func):
+def handle_parcels(api, parcels, action_func):
     results = dict()
     for cluster in api.get_all_clusters():
         results[cluster.name] = dict()
