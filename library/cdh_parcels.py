@@ -8,7 +8,7 @@ def download_parcel(cluster, parcel, timeout):
     try:
         pd = parcel.start_download()
         if pd.success != True:
-            result = "FAILED: Could not start downloading parcel"
+            return "FAILED: Could not start downloading parcel"
         curr_timeout = 0
         while parcel.stage != 'DOWNLOADED' and curr_timeout < timeout:
             parcel = cluster.get_parcel(parcel.product, parcel.version)
@@ -18,16 +18,16 @@ def download_parcel(cluster, parcel, timeout):
             curr_timeout += 15
         if parcel.stage == 'DOWNLOADED':
             return "OK"
-        return "FAILED: Timed out"
+        return "FAILED: Timed out (Perhaps the parcel is already downloaded and distributed?)"
     except Exception as e:
-        return "FAILED: %s" % (e)   
+        return "FAILED: %s" % (e)
 
 
 def distribute_parcel(cluster, parcel, timeout):
     try:
         pd = parcel.start_distribution()
         if pd.success != True:
-            result = "FAILED: Could not start distributing parcel"
+            return "FAILED: Could not start distributing parcel"
         curr_timeout = 0
         while parcel.stage != 'DISTRIBUTED' and curr_timeout < timeout:
             parcel = cluster.get_parcel(parcel.product, parcel.version)
@@ -37,7 +37,7 @@ def distribute_parcel(cluster, parcel, timeout):
             curr_timeout += 15
         if parcel.stage == 'DISTRIBUTED':
             return "OK"
-        return "FAILED: Timed out"
+        return "FAILED: Timed out (Perhaps the parcel is already downloaded and distributed?)"
     except Exception as e:
         return "FAILED: %s" % (e)
 
@@ -46,7 +46,7 @@ def activate_parcel(cluster, parcel, timeout):
     try:
         pd = parcel.activate()
         if pd.success != True:
-            result = "FAILED: Could not activate parcel"
+            return "FAILED: Could not activate parcel"
         curr_timeout = 0
         while parcel.stage != 'ACTIVATED' and curr_timeout < timeout:
             parcel = cluster.get_parcel(parcel.product, parcel.version)
@@ -58,7 +58,7 @@ def activate_parcel(cluster, parcel, timeout):
             return "OK"
         return "FAILED: Timed out"
     except Exception as e:
-        return "FAILED: %s" % (e)   
+        return "FAILED: %s" % (e)
 
 
 def handle_parcels(api, parcels, action_func, timeout):
