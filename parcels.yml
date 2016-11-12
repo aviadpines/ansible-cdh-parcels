@@ -9,8 +9,6 @@
         password: admin
         repos:
           - http://archive.cloudera.com/kafka/parcels/1.4.0/
-        register: result
-    - debug: var=result
 
 - name: Download Kafka parcel
   hosts: localhost
@@ -24,8 +22,6 @@
         password: admin
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
-      register: result
-    - debug: var=result    
 
 - name: Distibute Kafka parcel
   hosts: localhost
@@ -39,8 +35,6 @@
         password: admin
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
-      register: result
-    - debug: var=result
 
 - name: Distibute Kafka parcel
   hosts: localhost
@@ -54,5 +48,3 @@
         password: admin
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
-      register: result
-    - debug: var=result
