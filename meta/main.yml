@@ -1,6 +1,3 @@
----
-# nginx/meta/main.yml
-
 galaxy_info:
     author: aviadpines
     description: Install CDH repositories and parcels
