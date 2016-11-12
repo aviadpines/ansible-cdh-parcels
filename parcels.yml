@@ -1,5 +1,6 @@
 - name: Add Kafka repo
   hosts: localhost
+  gather_facts: False
   tags:
     - repo
   tasks:
@@ -12,6 +13,7 @@
 
 - name: Download Kafka parcel
   hosts: localhost
+  gather_facts: False
   tags:
     - download
   tasks:
@@ -25,6 +27,7 @@
 
 - name: Distibute Kafka parcel
   hosts: localhost
+  gather_facts: False
   tags:
     - distribute
   tasks:
@@ -36,8 +39,9 @@
         parcels:
           KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56
 
-- name: Distibute Kafka parcel
+- name: Activate Kafka parcel
   hosts: localhost
+  gather_facts: False
   tags:
     - activate
   tasks:
