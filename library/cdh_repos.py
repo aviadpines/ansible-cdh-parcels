@@ -28,7 +28,7 @@ def main():
                 api_version = dict(default = 10),
                 user = dict(default = None),
                 password = dict(default = None),
-                repos = dict(type = 'list', default = [], required = True)
+                repos = dict(type = 'list', required = True)
                 ),
             )
 
