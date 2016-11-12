@@ -4,12 +4,12 @@
     - repo
   tasks:
     - cdh_repos:
-      host: 172.18.50.214
-      user: admin
-      password: admin
-      repos:
-        - http://archive.cloudera.com/kafka/parcels/1.4.0/
-      register: result
+        host: 172.18.50.214
+        user: admin
+        password: admin
+        repos:
+          - http://archive.cloudera.com/kafka/parcels/1.4.0/
+        register: result
     - debug: var=result
 
 - name: Download Kafka parcel
