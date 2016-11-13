@@ -18,8 +18,13 @@ def add_repos(api, repos):
 
 
 import time
-from cm_api.api_client import ApiResource
 from ansible.module_utils.basic import AnsibleModule
+
+try:
+    from cm_api.api_client import ApiResource
+    HAS_CM_CLIENT = True
+except ImportError:
+    HAS_CM_CLIENT = False
 
 def main():
     module = AnsibleModule(
@@ -31,6 +36,9 @@ def main():
                 repos = dict(type = 'list', required = True)
                 ),
             )
+
+    if not HAS_CM_CLIENT:
+        module.fail_json(msg='cm-api required for this module')
 
     host = module.params['host']
     api_version = module.params['api_version']
