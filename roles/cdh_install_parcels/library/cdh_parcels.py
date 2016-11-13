@@ -81,7 +81,7 @@ def main():
     module = AnsibleModule(
             argument_spec = dict(
                 host = dict(required = True),
-                api_version = dict(default = 10),
+                api_version = dict(default = 1),
                 user = dict(default = None),
                 password = dict(default = None),
                 parcels = dict(type = 'dict', required = True),

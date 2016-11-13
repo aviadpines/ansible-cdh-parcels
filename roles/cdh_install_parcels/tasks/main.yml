@@ -1,0 +1,42 @@
+- name: Add repositories
+  cdh_repos:
+    host: {{ cm_host }}
+    user: {{ cm_user }}
+    password: {{ cm_pass }}
+    api_version: {{ api_version }}
+    repos: {{ repositories }}
+  register: repo_results
+- debug: var=repo_results
+
+- name: Download parcels
+  cdh_parcels:
+    action: download
+    host: {{ cm_host }}
+    user: {{ cm_user }}
+    password: {{ cm_pass }}
+    api_version: {{ api_version }}
+    parcels: {{ parcels }}
+  register: download_results
+- debug: var=download_results
+
+- name: Distibute parcels
+  cdh_parcels:
+    action: distribute
+    host: {{ cm_host }}
+    user: {{ cm_user }}
+    password: {{ cm_pass }}
+    api_version: {{ api_version }}
+    parcels: {{ parcels }}
+  register: distribute_results
+- debug: var=distribute_results
+
+- name: Activate parcels
+  cdh_parcels:
+    action: activate
+    host: {{ cm_host }}
+    user: {{ cm_user }}
+    password: {{ cm_pass }}
+    api_version: {{ api_version }}
+    parcels: {{ parcels }}
+  register: activate_results
+- debug: var=activate_results
