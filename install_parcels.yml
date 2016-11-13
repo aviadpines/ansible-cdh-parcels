@@ -11,7 +11,7 @@
         cm_pass: admin,
         api_version: 10,
         timeout: 60,
-        repositories: ["http://archive.cloudera.com/kafka/parcels/1.4.0/"]
+        repositories: ["http://archive.cloudera.com/kafka/parcels/1.4.0/"],
         parcels: { KAFKA: 0.8.2.0-1.kafka1.4.0.p0.56 }
       }
 
